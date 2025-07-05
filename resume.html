@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume - Scott Fischer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-image: url('assets/images/paper-texture.jpg');
+            background-repeat: repeat; 
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1350px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hamburger {
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 5px;
+            transition: transform 0.3s ease;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 10;
+        }
+
+        .hamburger:hover {
+            transform: scale(1.1);
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: white;
+            margin: 3px 0;
+            transition: 0.3s;
+            border-radius: 2px;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(-45deg) translate(-5px, 6px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(45deg) translate(-5px, -6px);
+        }
+
+        .menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            min-width: 200px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+
+        .menu.active {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: all;
+        }
+
+        .menu-item {
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            border-bottom: 1px solid #f0f0f0;
+            color: #333;
+        }
+
+        .menu-item:hover {
+            background: #f8f9fa;
+        }
+
+        .menu-item:last-child {
+            border-bottom: none;
+        }
+
+        .profile-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            background: linear-gradient(45deg, #f0f0f0, #e0e0e0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: #666;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .link {
+            color: white;
+            text-decoration: none;
+        }
+
+        .profile-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .name {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .title {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            font-size: 0.95rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            opacity: 0.9;
+        }
+
+        .contact-icon {
+            width: 35px;
+            height: 35px;
+            object-fit: contain;
+        }
+
+        .main-content {
+            display: flex;
+            min-height: 600px;
+        }
+
+        .sidebar {
+            width: 310px;
+            background: #f8f9fa;
+            padding: 40px 30px;
+            border-right: 1px solid #e9ecef;
+        }
+
+        .pdf-preview {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .download-section {
+            font-family: 'Montserrat';
+            text-align: center;
+            margin-bottom: 5px;
+        }
+
+        .download-btn {
+            background: #ececec;
+            color: black;
+            border: none;
+            padding: 15px 30px;
+            border-color: #333;
+            border: 2px solid #0e0e0e;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .download-btn-icon {
+            width: 18px;
+            height: 18px;
+            object-fit: contain;
+        }
+
+        .pdf-viewer {
+            width: 100%;
+            max-width: 800px;
+            height: 1100px;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            background: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+            font-size: 1.1rem;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section h3 {
+            color: #333;
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .section p,
+        .section li {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+
+        .section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .section li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 5px;
+        }
+
+        .section li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .skill-bar {
+            background: #e9ecef;
+            height: 8px;
+            border-radius: 4px;
+            margin: 8px 0;
+            overflow: hidden;
+        }
+        /*
+        .skill-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+            animation: shimmer 2s infinite;
+        }
+            */
+
+        .skill-fill {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            height: 10px;
+            border-radius: 10px;
+            transition: width 2s ease;
+            position: relative;
+        }
+
+        .skill-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.3) 50%, transparent 70%);
+            animation: shiny 2s infinite;
+        }
+
+        @keyframes shiny {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .no-pdf-message {
+            text-align: center;
+            color: #6c757d;
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 15px;
+            }
+
+            .header {
+                padding: 30px 20px;
+            }
+
+            .name {
+                font-size: 2rem;
+            }
+
+            .contact-info {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .main-content {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #e9ecef;
+            }
+
+            .pdf-preview {
+                padding: 20px;
+            }
+
+            .pdf-viewer {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="hamburger" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+                <div class="menu" id="menu">
+                    <div class="menu-item" onclick="selectMenuItem('Home')">Home</div>
+                    <div class="menu-item" onclick="selectMenuItem('About')">About</div>
+                    <div class="menu-item" onclick="selectMenuItem('Portfolio')">Portfolio</div>
+                    <div class="menu-item" onclick="selectMenuItem('Contact')">Contact</div>
+                </div>
+            </div>
+            <div class="header-content">
+                <div class="profile-image">
+                    <img src="assets/images/headshot_orig.png">
+                </div>
+                <h1 class="name">Scott Fischer</h1>
+                <p class="title">Software Engineer</p>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <img class="contact-icon" src="assets/images/github.png">
+                        <span><a class="link" href="https://github.com/Scottie-Fischer">Github Portfolio</a></span>
+                    </div>
+                    <div class="contact-item">
+                        <img class="contact-icon" style="height: 27px" src="assets/images/linkedin_icon.png">
+                        <span><a class="link" href="https://www.linkedin.com/in/scott-fischer/">linkedin.com/in/scott-fischer</a></span>
+                    </div>
+                    <div class="contact-item">
+                        <img class="contact-icon" src="assets/images/location_icon.png">
+                        <span>San Francisco, CA</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="sidebar">
+                <div class="section">
+                    <h3>Languages</h3>
+                    <div style="margin-bottom: 15px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                            <span>Python</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-fill" style="width: 100%;"></div>
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                            <span>Dart/Flutter</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-fill" style="width: 100%;"></div>
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                            <span>JavaScript</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-fill" style="width: 100%;"></div>
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                            <span>C</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-fill" style="width: 100%;"></div>
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                            <span>Swift</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-fill" style="width: 100%;"></div>
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                            <span>Kotlin</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-fill" style="width: 100%;"></div>
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                            <span>HTML/CSS</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-fill" style="width: 100%;"></div>
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                            <span>SQL</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-fill" style="width: 100%;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="section">
+                    <h3>Skills</h3>
+                    <ul>
+                        <li>React</li>
+                        <li>Project Planning</li>
+                        <li>Git</li>
+                        <li>Technical Documentation</li>
+                        <li>AWS Infrastructure</li>
+                        <li>Kubernetes</li>
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <h3>Education</h3>
+                    <p><strong>United States Army Cyber Center of Excellence</strong><br>
+                        <em>2019</em>
+                    </p>
+                    <p><strong>B.S. Computer Engineering</strong><br>
+                        Minor in Computer Science <br>
+                        University of California, Santa Cruz<br>
+                        <em>2021</em>
+                    </p>
+                </div>
+
+                <div class="section">
+                    <h3>Certifications</h3>
+                    <ul>
+                        <li>Secret Security Clearance</li>
+                        <li>Hardvard's C50 Intro to AI</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="pdf-preview">
+                <div class="download-section">
+                    <h2 style="color: #333; margin-bottom: 15px;">Resume Preview</h2>
+                    <button class="download-btn" onclick="downloadPDF()">
+                        <img src="./assets/images/download_icon.png" alt="Icon" class="download-btn-icon">
+                        Download Resume PDF
+                    </button>
+                </div>
+                <iframe class="pdf-viewer" id="pdfViewer" src="./assets/files/scott-fischer-resume.pdf" type="application/pdf" onerror="handlePDFError()">
+                </iframe>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleMenu() {
+            const hamburger = document.querySelector('.hamburger');
+            const menu = document.getElementById('menu');
+
+            hamburger.classList.toggle('active');
+            menu.classList.toggle('active');
+        }
+
+        function selectMenuItem(item) {
+            let choice = item.toLowerCase();
+            if(choice == 'home'){
+                window.location.href = `https://scottie-fischer.github.io`;
+            }else{
+                window.location.href = `https://scottie-fischer.github.io/${choice}.html`;
+            }
+            toggleMenu(); // close menu after selection
+        }
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function (event) {
+            const hamburger = document.querySelector('.hamburger');
+            const menu = document.getElementById('menu');
+
+            if (!hamburger.contains(event.target)) {
+                hamburger.classList.remove('active');
+                menu.classList.remove('active');
+            }
+        });
+
+        // Close menu when mouse leaves the menu container
+        document.addEventListener('DOMContentLoaded', function () {
+            const hamburger = document.querySelector('.hamburger');
+            const menu = document.getElementById('menu');
+
+            menu.addEventListener('mouseleave', function () {
+                hamburger.classList.remove('active');
+                menu.classList.remove('active');
+            });
+        });
+
+        function downloadPDF() {
+            const pdfUrl = 'assets/files/scott-fischer-resume.pdf';
+            const link = document.createElement('a');
+            link.href = pdfUrl;
+            link.download = 'Scott_Fischer_Resume.pdf';
+            document.body.appendChild(link);
+            window.open(link);
+            document.body.removeChild(link);
+            
+        }
+
+        // Animate skill bars on page load
+        document.addEventListener('DOMContentLoaded', function () {
+            const skillBars = document.querySelectorAll('.skill-fill');
+
+            setTimeout(() => {
+                skillBars.forEach(bar => {
+                    const width = bar.style.width;
+                    bar.style.width = '0%';
+                    setTimeout(() => {
+                        bar.style.width = width;
+                    }, 100);
+                });
+            }, 500);
+        });
+        renderPDF(PDF_URL);
+    </script>
+</body>
+
+</html>

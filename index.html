@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Split Layout Page</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        .left-panel {
+            width: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .fixed-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.8);
+        }
+
+        .right-panel {
+            width: 50%;
+            background: #ffffff;
+            overflow-y: auto;
+            padding: 0;
+        }
+
+        .header {
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e0e0e0;
+            z-index: 100;
+        }
+
+        .title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            font-family: 'Montserrat';
+            color: #333;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .spacer {
+            height: 3.5vh;
+        }
+
+        .hamburger {
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 5px;
+            transition: transform 0.3s ease;
+        }
+
+        .hamburger:hover {
+            transform: scale(1.1);
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: #333;
+            margin: 3px 0;
+            transition: 0.3s;
+            border-radius: 2px;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(-45deg) translate(-5px, 6px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(45deg) translate(-5px, -6px);
+        }
+
+        .menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            min-width: 200px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+
+        .menu.active {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: all;
+        }
+
+        .menu-item {
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .menu-item:hover {
+            background: #f8f9fa;
+        }
+
+        .menu-item:last-child {
+            border-bottom: none;
+        }
+
+        .content {
+            margin: 0 auto;
+            padding: 40px 30px;
+            max-width: 600px;
+        }
+        /* 
+        background-image: url('assets/images/paper-texture.jpg');
+        background-repeat: repeat; 
+        */
+        .main_card {
+            margin-bottom: 40px;
+            padding: 30px;
+            background: #f3f8fc;
+            border-radius: 12px;
+            border: 1px solid #e9ecef;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .main_card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .main_card h2 {
+            font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #2b2b2b, #2b2b2b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .main_card p {
+            line-height: 1.8;
+            color: #555;
+            font-size: 1.1rem;
+        }
+
+        tag-body {
+            margin-bottom: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, #f8f9fa, #ffffff);
+            border-radius: 12px;
+            border: 1px solid #e9ecef;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+
+        .tag-body h3 {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, #3a3a3a, #2b2b2b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .tag {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 10px rgba(102, 126, 234, 0.3);
+        }
+
+        .tag:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+        }
+
+        /* Responsive design */
+        @media (max-width: 950px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .left-panel {
+                width: 100%;
+                height: 40vh;
+            }
+
+            .right-panel {
+                width: 100%;
+                height: 60vh;
+            }
+
+            .title {
+                font-size: 2rem;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .main_card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="left-panel">
+            <img src="assets/images/military_portrait.jpg"
+                alt="scott's portrait" class="fixed-image">
+        </div>
+
+        <div class="right-panel">
+            <div class="header">
+                <h1 class="title">Welcome to Scott's Website</h1>
+                <div class="hamburger" onclick="toggleMenu()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <div class="menu" id="menu">
+                        <div class="menu-item" onclick="selectMenuItem('Home')">Home</div>
+                        <div class="menu-item" onclick="selectMenuItem('Resume')">Resume</div>
+                        <div class="menu-item" onclick="selectMenuItem('Projects')">Projects</div>
+                        <div class="menu-item" onclick="selectMenuItem('Articles')">Art</div>
+                        <div class="menu-item" onclick="selectMenuItem('Entertainment Center')">Entertainment Center</div>
+                        <div class="menu-item" onclick="selectMenuItem('Archive')">Archive</div>
+                        <div class="menu-item" onclick="selectMenuItem('Contact')">Contact</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content">
+                <div class="tag-body">
+                    <h3>Prominent Skills</h3>
+                    <div class="tags-container">
+                        <div class="tag">Python</div>
+                        <div class="tag">Dart/Flutter</div>
+                        <div class="tag">C</div>
+                        <div class="tag">JavaScript</div>
+                        <div class="tag">Swift</div>
+                        <div class="tag">Kotlin</div>
+                        <div class="tag">TypeScript</div>
+                        <div class="tag">HTML/CSS</div>
+                        <div class="tag">Documentation</div>
+                        <div class="tag">AWS</div>
+                    </div>
+                </div>
+                
+                <div class="spacer"></div>
+                
+                <div class="main_card">
+                    <h2>About Me</h2>
+                    <p>
+                        Hi! I'm Scott, a software engineer with 5 years of experience working as a full stack developer, 
+                        an alumni of UC Santa Cruz, and a soldier in the United States Army Reserve.
+                        Currently I am working at Element Science, since 2022, where I work on a Class III medical device.<br><br>
+                        In 2019, I enlisted as a Signal Support Specialist in the Army Reserve, and trained/worked since then
+                        on various radio, satellite, and networking equipment and lead a team of 4-5 soldiers to bring 
+                        communications to my company (397th Engineer Batallion) and the batallion down-trace of it. 
+                        During this time, I also received a Bachelors of Science with a major in Computer Engineering and a
+                        minor in Computer Science, and graduated with honors. 
+                        With this I am always growing my love and knowledge of software engineering, computer systems, 
+                        and embedded systems engineering. My passions lie in software, hardware, and the blend of the two domains.
+                    </p>
+                </div>
+
+                <div class="main_card">
+                    <h2>More Details About My Experience</h2>
+                    <p>
+                        I have experience working on BLE, cross-platform mobile apps, native Kotlin and Swift apps, 
+                        mobile app cybersecurity, cloud micro-services, designing and developing data platforms/pipelines,
+                        building front-end dashboards, React web apps, and desktop applications. Additionally, I have experience project planning,
+                        leading cross functional projects, planning and creating technical documentation, 
+                        and presenting to investors/outside entities in both informal and technical ways. 
+                    </p>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Close menu when mouse leaves hamburger menu
+        document.addEventListener('DOMContentLoaded', function () {
+            const hamburger = document.querySelector('.hamburger');
+            const menu = document.getElementById('menu');
+
+            menu.addEventListener('mouseleave', function () {
+                hamburger.classList.remove('active');
+                menu.classList.remove('active');
+            });
+        });
+
+        // Open/close when clicking icon
+        function toggleMenu() {
+            const hamburger = document.querySelector('.hamburger');
+            const menu = document.getElementById('menu');
+
+            hamburger.classList.toggle('active');
+            menu.classList.toggle('active');
+        }
+
+        function selectMenuItem(item) {
+            page = item.toLowerCase()
+            if (page == 'home') {
+                window.location.href = `https://scottie-fischer.github.io`;
+            }else{
+                window.location.href = `https://scottie-fischer.github.io/${page}.html`;
+            }
+                toggleMenu(); // Close menu after selection
+        }
+
+        // close menu when clicking outside
+        document.addEventListener('click', function (event) {
+            const hamburger = document.querySelector('.hamburger');
+            const menu = document.getElementById('menu');
+
+            if (!hamburger.contains(event.target)) {
+                hamburger.classList.remove('active');
+                menu.classList.remove('active');
+            }
+        });
+
+        function autoHoverTags() {
+            const tags = document.querySelectorAll('.tag');
+            let currentIndex = 0;
+            let intervalId = [];
+            let mouseEnter = false;
+
+            // Recursive func that get's random index != current hover
+            const getRandomIndex = () => {
+                let x = Math.floor(Math.random() * tags.length);
+                if(x != currentIndex){
+                    return x;
+                }
+                return getRandomIndex();
+            };
+
+            const hoverTag = (index) => {
+                // Remove hover effect from all tags
+                tags.forEach(tag => {
+                    tag.style.transform = '';
+                    tag.style.boxShadow = '0 8px 25px rgba(102, 126, 234, 0.5))';
+                });
+
+                // Apply hover effect to current tag
+                if (tags[index]) {
+                    tags[index].style.transform = 'translateY(-5px) scale(1.05)';
+                    tags[index].style.boxShadow = '0 4px 15px rgba(102, 126, 234, 0.4)';
+                }
+            };
+
+            const startAutoHover = () => {
+                if(intervalId.length == 0 && !mouseEnter){
+                intervalId.push(
+                    setInterval(() => {
+                        const randomIndex = getRandomIndex();
+                        currentIndex = randomIndex;
+                        hoverTag(randomIndex);
+                    }, 1000)
+                ); // 1 second
+                }
+            };
+
+            const stopAutoHover = () => {
+                while (intervalId.length > 0) {
+                    let id = intervalId.pop();
+                    clearInterval(id);
+                }
+                // Reset all tags to normal state
+                tags.forEach(tag => {
+                    tag.style.transform = '';
+                    tag.style.boxShadow = '0 2px 10px rgba(102, 126, 234, 0.4)';
+                });
+            };
+
+            // start hover when page loads
+            startAutoHover();
+
+            // pause auto hover when mousing over
+            tags.forEach(tag => {
+                tag.addEventListener('mouseenter', () => {
+                    mouseEnter = true;
+                    stopAutoHover();
+                });
+                tag.addEventListener('mouseleave', () => {
+                    mouseEnter = false;
+                    if(intervalId.length == 0){
+                        setTimeout(startAutoHover, 1000);
+                    }
+                });
+            });
+
+            return {
+                start: startAutoHover,
+                stop: stopAutoHover,
+            };
+        }
+
+            // Initialize auto hover when page loads
+            document.addEventListener('DOMContentLoaded', () => {
+                const tagHover = autoHoverTags();
+            });
+    </script>
+</body>
+
+</html>
