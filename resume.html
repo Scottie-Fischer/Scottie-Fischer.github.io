@@ -118,12 +118,12 @@
             padding: 15px 20px;
             cursor: pointer;
             transition: background 0.3s ease;
-            border-bottom: 1px solid #f0f0f0;
+            border-bottom: 1.5px solid #e6e6e6;
             color: #333;
         }
 
         .menu-item:hover {
-            background: #f8f9fa;
+            background: #e6e6e6;
         }
 
         .menu-item:last-child {
@@ -399,6 +399,7 @@
                 <span></span>
                 <div class="menu" id="menu">
                     <div class="menu-item" onclick="selectMenuItem('Home')">Home</div>
+                    <div class="menu-item" onclick="selectMenuItem('Projects')">Projects</div>
                 </div>
             </div>
             <div class="header-content">
@@ -554,7 +555,7 @@
             if(choice == 'home'){
                 window.location.href = `https://scottie-fischer.github.io`;
             }else{
-                window.location.href = `https://scottie-fischer.github.io/${choice}.html`;
+                window.location.href = `https://scottie-fischer.github.io/${choice}`;
             }
             toggleMenu(); // close menu after selection
         }

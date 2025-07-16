@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/x-icon" href="assets/favicon.ico?">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <title>Projects - Scott Fischer</title>
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: white;
+            min-height: 100vh;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .body-container {
+            max-width: 1200px;
+            margin: 5vh auto;
+            padding: 0 20px;
+        }
+
+    /*================ HEADER STYLING ================*/
+
+        .header {
+            height: 250px;
+            text-align: center;
+            position: relative;
+            background: linear-gradient(90deg, #f09712 0%, #ff6b6b 25%, #667eea 75%, #667eea 100%);
+            border-radius: 10px;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: white; /*rgba(240, 151, 18, 0.6);*/
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            z-index: -1;
+        }
+
+        .header h1 {
+            font-family: 'Montserrat';
+            font-size: 3.5rem;
+            font-weight: 100;
+            color: white;
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: translateY(-30px);
+            animation: slideInDown 1s ease-in forwards;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.9);
+            opacity: 0;
+            transform: translateY(30px);
+            animation: slideInUp 1s ease-out 0.3s forwards;
+        }
+
+        .title-container {
+            padding: 55px 0;
+        }
+
+        .floating-decor {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .shape {
+            position: absolute;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .shape:nth-child(1) {
+            width: 60px;
+            height: 60px;
+            top: 15%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .shape:nth-child(2) {
+            width: 80px;
+            height: 80px;
+            top: 15%;
+            right: 20%;
+            animation-delay: 2s;
+        }
+
+        .shape:nth-child(3) {
+            width: 40px;
+            height: 40px;
+            bottom: 15%;
+            left: 25%;
+            animation-delay: 4s;
+        }
+    /*================================================*/
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            padding: 40px 0;
+        }
+
+        .project-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 3px 10px 30px rgba(0, 0, 0, 0.5);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            opacity: 0;
+            transform: translateY(50px);
+            animation: slideInUp 0.6s ease-out forwards;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .project-card:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .project-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .project-card:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .project-card:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        .project-card:nth-child(5) {
+            animation-delay: 0.5s;
+        }
+
+        .project-card:nth-child(6) {
+            animation-delay: 0.6s;
+        }
+
+        .project-card::before {
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .project-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .project-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .project-image {
+            height: 15vh;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .project-image::before {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.3s ease;
+        }
+
+        .project-card:hover .project-image::before {
+            transform: translate(-50%, -50%) scale(1.2);
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .project-content {
+            height: 100;
+            padding: 30px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .project-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .project-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out, margin-bottom 0.5s ease-out;
+        }
+
+        .project-card:hover .project-tags {
+            max-height: 100px;
+            margin-bottom: 20px;
+        }
+
+        .tag {
+            background: #f09712;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease-out;
+        }
+
+        .project-card:hover .tag {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .project-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .project-link {
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .primary-link {
+            background: #667eea;
+            color: white;
+            cursor: pointer;
+        }
+
+        .secondary-link {
+            border: 2px solid #667eea;
+            color: #667eea;
+            cursor: pointer;
+        }
+
+        .project-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .project-link:hover::before {
+            left: 100%;
+        }
+
+        .primary-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .secondary-link:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .project-more {
+            padding: 0 12.5%;
+            justify-content: center !important;        
+        }
+
+        .more-border{
+            padding: 6px;   /* border size */
+            background: linear-gradient(90deg,  #667eea 0%, #667eea 25%, #ff6b6b 75%, #f09712 100%);
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 3px 10px 30px rgba(0, 0, 0, 0.5);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            opacity: 0;
+            transform: translateY(50px);
+            animation: slideInUp 0.6s ease-out forwards;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .more-container {
+            background: white;
+            padding: 15px;
+            border-radius: 21px;
+        }
+
+        .more-border::before{
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes tagSlideIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes tagBounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-3px);
+            }
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        .hamburger-container {
+                padding-bottom: 50px;
+        }
+
+        .nav-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-menu li {
+            margin: 0;
+            cursor: pointer;
+        }
+
+        .nav-menu a {
+            color: black;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            padding: 10px 0;
+            position: relative;
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: rgb(0, 0, 0);
+            transition: width 0.3s ease;
+        }
+
+        .nav-menu a:hover::after {
+            width: 105%;
+        }
+
+        .nav-spacer {
+            font-size: 1.5rem;
+            font-weight: 300;
+            padding-left: 5px;
+            color: black;
+            text-decoration: none;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: black;
+            margin: 3px 0;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px);
+        }
+
+        .menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            min-width: 200px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+
+        .menu.active {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: all;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .menu-item {
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            color: #333;
+        }
+
+        .menu-item:hover {
+            background: rgba(255, 255, 255, 0.75);
+        }
+
+        .menu-item:last-child {
+            border-bottom: none;
+        }
+
+        @media (max-width: 768px) {
+            
+            /* Hide Nav Menu*/
+            .nav-menu {
+                display: none;
+            }
+            .nav-menu a {
+                display: none;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .header h1 {
+                font-size: 2.5rem;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .project-card {
+                margin: 0 10px;
+            }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px);}
+            50% { transform: translateY(-20px); }
+        }
+
+        .header-padd {
+            padding: 80px 0;
+        }
+
+        @keyframes particleCollapse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+        
+    </style>
+</head>
+
+<body>
+    <nav class="nav-container">
+        <div class="nav-content">
+            <div class="nav-spacer">PROJECTS</div>
+            <ul class="nav-menu" id="navMenu">
+                <li><a onclick="selectMenuItem('Home')">Home</a></li>
+                <li><a onclick="selectMenuItem('Resume')">Resume</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+                <div class="menu" id="menu">
+                    <div class="menu-item" onclick="selectMenuItem('Home')">Home</div>
+                    <div class="menu-item" onclick="selectMenuItem('Resume')">Resume</div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="body-container">
+        <div class="header-padd">
+            <header class="header">
+                <div class="floating-decor">
+                    <div class="shape"></div>
+                    <div class="shape"></div>
+                    <div class="shape"></div>
+                </div>
+                <div class="title-container">
+                    <h1>My Projects</h1>
+                    <p>Code, Creativity, and Fun</p>
+                </div>
+            </header>
+        </div>
+
+        <!-- Website Project Details -->
+        <div class="projects-grid" id="projectsGrid">
+            <div class="project-card">
+                <div class="project-image"></div>
+                <div class="project-content">
+                    <h3 class="project-title">Personal Website</h3>
+                    <p class="project-description">My Personal website is created by myself and hosted on github pages.</p>
+                    <div class="project-tags">
+                        <span class="tag" style="transition-delay: 0.1s">JavaScript</span>
+                        <span class="tag" style="transition-delay: 0.2s">CSS</span>
+                        <span class="tag" style="transition-delay: 0.3s">HTML</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://github.com/Scottie-Fischer/Scottie-Fischer.github.io" class="project-link secondary-link">Github</a>
+                    </div>
+                </div>
+            </div>
+            <div class="project-card">
+                <div class="project-image"></div>
+                <div class="project-content">
+                    <h3 class="project-title">Net Worth Tracker</h3>
+                    <p class="project-description">
+                        A budgeting and net worth tracking tool. Built as a desktop app using Flutter, it incorporates encryption, database, API, AI, file parsing, and more.
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag" style="transition-delay: 0.1s">Flutter</span>
+                        <span class="tag" style="transition-delay: 0.2s">LLM</span>
+                        <span class="tag" style="transition-delay: 0.3s">File Parsing</span>
+                        <span class="tag" style="transition-delay: 0.4s">SQLite</span>
+                        <span class="tag" style="transition-delay: 0.5s">Encryption</span>
+                        <span class="tag" style="transition-delay: 0.5s">REST API</span>
+                    </div>
+                    <div class="project-links">
+                        <a class="project-link primary-link">Demo Coming Soon</a>
+                        <a class="project-link secondary-link">Github</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Oscilloscope Project Details -->
+            <div class="project-card">
+                <div class="project-image"></div>
+                <div class="project-content">
+                    <h3 class="project-title">Oscilloscope</h3>
+                    <p class="project-description">
+                        An embedded project using a Cypress CY8CPROTO-063 MCU. The RTC is used as a trigger for the DMA to read the value from the ADC unit
+                        that takes a signal from GPIO pin. A buffer in RAM will be filled, 
+                        once filled the average frequency will be calculated while a separate buffer is filled.
+                        The average of these frequencies will be output to the LCD every couple of seconds.
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag" style="transition-delay: 0.1s">C</span>
+                        <span class="tag" style="transition-delay: 0.2s">GPIO</span>
+                        <span class="tag" style="transition-delay: 0.3s">ADC</span>
+                        <span class="tag" style="transition-delay: 0.4s">DMA</span>
+                        <span class="tag" style="transition-delay: 0.5s">LCD Display</span>
+                        <span class="tag" style="transition-delay: 0.6s">RTC</span>
+                        <span class="tag" style="transition-delay: 0.6s">Embedded</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://github.com/Scottie-Fischer/Cypress-Oscilloscope/tree/master" class="project-link secondary-link">Github</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Watering Project Details -->
+            <div class="project-card">
+                <div class="project-image"></div>
+                <div class="project-content">
+                    <h3 class="project-title">Auto Watering system</h3>
+                    <p class="project-description">
+                        A simple embedded project meant to solve the over-watering of my bonsai saplings. 
+                        This project uses a raspberry pi pico, a small water pump, a couple transistors, and a chemical soil moisture sensor.
+                    </p>
+                    <div style="flex: 1 !important;"></div>
+                    <div class="project-tags">
+                        <span class="tag" style="transition-delay: 0.1s">MicroPython</span>
+                        <span class="tag" style="transition-delay: 0.2s">GPIO</span>
+                        <span class="tag" style="transition-delay: 0.3s">Interrupts</span>
+                        <span class="tag" style="transition-delay: 0.4s">Transistor</span>
+                        <span class="tag" style="transition-delay: 0.5s">Embedded</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://github.com/Scottie-Fischer/Auto-Water" class="project-link secondary-link">Github</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="project-more">
+            <div class="more-border">
+                <div class="more-container">
+                    <div class="project-content">
+                        <h3 class="project-title" style="text-align: center !important; margin-top: 15px;">More Coming Soon!</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleMenu() {
+                const hamburger = document.querySelector('.hamburger');
+                const menu = document.getElementById('menu');
+
+                hamburger.classList.toggle('active');
+                menu.classList.toggle('active');
+            }
+
+            function selectMenuItem(item) {
+                let choice = item.toLowerCase();
+                if (choice == 'home') {
+                    window.location.href = `https://scottie-fischer.github.io`;
+                } else {
+                    window.location.href = `https://scottie-fischer.github.io/${choice}`;
+                }
+                toggleMenu(); // close menu after selection
+            }
+
+            // Close menu when clicking outside
+            document.addEventListener('click', function (event) {
+                const hamburger = document.querySelector('.hamburger');
+                const menu = document.getElementById('menu');
+
+                if (!hamburger.contains(event.target)) {
+                    hamburger.classList.remove('active');
+                    menu.classList.remove('active');
+                }
+            });
+
+            // Close menu when mouse leaves the menu container
+            document.addEventListener('DOMContentLoaded', function () {
+                const hamburger = document.querySelector('.hamburger');
+                const menu = document.getElementById('menu');
+
+                menu.addEventListener('mouseleave', function () {
+                    hamburger.classList.remove('active');
+                    menu.classList.remove('active');
+                });
+            });
+
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                }
+            });
+        }, observerOptions);
+
+        // Add some interactive particles on click
+        document.addEventListener('click', (e) => {
+            createClickEffect(e.clientX, e.clientY);
+        });
+
+        function createClickEffect(x, y) {
+            const particle = document.createElement('div');
+            particle.style.position = 'fixed';
+            particle.style.left = x + 'px';
+            particle.style.top = y + 'px';
+            particle.style.width = '6px';
+            particle.style.height = '6px';
+            particle.style.background = 'rgba(255, 255, 255, 0.8)';
+            particle.style.borderRadius = '50%';
+            particle.style.pointerEvents = 'none';
+            particle.style.zIndex = '1000';
+            particle.style.animation = 'particleCollapse 0.6s ease-out forwards';
+
+            document.body.appendChild(particle);
+
+            // Remove Particle element after collapse dies out
+            setTimeout(() => {
+                particle.remove();
+            }, 600);
+        }
+    </script>
+</body>
+
+</html>
