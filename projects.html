@@ -112,6 +112,10 @@
             left: 25%;
             animation-delay: 4s;
         }
+
+        .header-padd {
+            padding: 80px 0;
+        }
     /*================================================*/
 
         .projects-grid {
@@ -525,6 +529,10 @@
         }
 
         @media (max-width: 768px) {
+
+            .header-padd {
+                padding: 7.5vh 0 0 0px;
+            }
             
             /* Hide Nav Menu*/
             .nav-menu {
@@ -557,10 +565,6 @@
             50% { transform: translateY(-20px); }
         }
 
-        .header-padd {
-            padding: 80px 0;
-        }
-
         @keyframes particleCollapse {
             0% {
                 transform: scale(1);
@@ -590,6 +594,7 @@
                 <div class="menu" id="menu">
                     <div class="menu-item" onclick="selectMenuItem('Home')">Home</div>
                     <div class="menu-item" onclick="selectMenuItem('Resume')">Resume</div>
+                    <div class="menu-item" onclick="selectMenuItem('Art')">Art</div>
                 </div>
             </div>
         </div>
@@ -734,44 +739,44 @@
 
     <script>
         function toggleMenu() {
-                const hamburger = document.querySelector('.hamburger');
-                const menu = document.getElementById('menu');
+            const hamburger = document.querySelector('.hamburger');
+            const menu = document.getElementById('menu');
 
-                hamburger.classList.toggle('active');
-                menu.classList.toggle('active');
+            hamburger.classList.toggle('active');
+            menu.classList.toggle('active');
+        }
+
+        function selectMenuItem(item) {
+            let choice = item.toLowerCase();
+            if (choice == 'home') {
+                window.location.href = `https://scottie-fischer.github.io`;
+            } else {
+                window.location.href = `https://scottie-fischer.github.io/${choice}`;
             }
+            toggleMenu(); // close menu after selection
+        }
 
-            function selectMenuItem(item) {
-                let choice = item.toLowerCase();
-                if (choice == 'home') {
-                    window.location.href = `https://scottie-fischer.github.io`;
-                } else {
-                    window.location.href = `https://scottie-fischer.github.io/${choice}`;
-                }
-                toggleMenu(); // close menu after selection
+        // Close menu when clicking outside
+        document.addEventListener('click', function (event) {
+            const hamburger = document.querySelector('.hamburger');
+            const menu = document.getElementById('menu');
+
+            if (!hamburger.contains(event.target)) {
+                hamburger.classList.remove('active');
+                menu.classList.remove('active');
             }
+        });
 
-            // Close menu when clicking outside
-            document.addEventListener('click', function (event) {
-                const hamburger = document.querySelector('.hamburger');
-                const menu = document.getElementById('menu');
+        // Close menu when mouse leaves the menu container
+        document.addEventListener('DOMContentLoaded', function () {
+            const hamburger = document.querySelector('.hamburger');
+            const menu = document.getElementById('menu');
 
-                if (!hamburger.contains(event.target)) {
-                    hamburger.classList.remove('active');
-                    menu.classList.remove('active');
-                }
+            menu.addEventListener('mouseleave', function () {
+                hamburger.classList.remove('active');
+                menu.classList.remove('active');
             });
-
-            // Close menu when mouse leaves the menu container
-            document.addEventListener('DOMContentLoaded', function () {
-                const hamburger = document.querySelector('.hamburger');
-                const menu = document.getElementById('menu');
-
-                menu.addEventListener('mouseleave', function () {
-                    hamburger.classList.remove('active');
-                    menu.classList.remove('active');
-                });
-            });
+        });
 
         // Intersection Observer for scroll animations
         const observerOptions = {
